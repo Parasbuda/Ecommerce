@@ -7,6 +7,8 @@ import Header from './components/header/Header';
 import SignInSignUp from "./pages/SignIn-SignUp/SignInSignUp"
 import {auth} from "./Firebase/Firebase"
 import {createUserProfileDocument} from "./Firebase/Firebase"
+import {connect} from "react-redux"
+import {setCurrentUser} from "./Redux/user/user.actions"
 class App extends Component{
 
   state={
@@ -17,24 +19,23 @@ class App extends Component{
 
   unsubscribeFromAuth=null
   componentDidMount(){
+
+    const{setCurrentUser}=this.props
     this.unsubscribeFromAuth=auth.onAuthStateChanged( async userAuth=>{
       if(userAuth){
         const userRef=await createUserProfileDocument(userAuth)
         userRef.onSnapshot(snapshot=>{
-          this.setState({
-            currentUser:{
+              setCurrentUser({
               id:snapshot.id,
               ...snapshot.data()
-            }
+            
           })
          
         })
        
       }
       else{
-        this.setState({
-          currentUser:userAuth
-        })
+       setCurrentUser(userAuth)
       }
    
     })
@@ -47,7 +48,7 @@ class App extends Component{
   render(){
   return (
     <div >
-      <Header currentUser={this.state.currentUser}/>
+      <Header />
       <Switch>
         <Route exact path="/" component={HomePage}></Route>
         <Route path="/shop" component={Shop}></Route>
@@ -57,5 +58,8 @@ class App extends Component{
   );
 }
 }
+const mapDispatchToProps=dispatch=>({
+  setCurrentUser:user=>dispatch(setCurrentUser(user))
+})
 
-export default App;
+export default connect(null,mapDispatchToProps)(App);
