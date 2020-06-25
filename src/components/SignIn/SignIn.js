@@ -3,21 +3,26 @@ import "./SignIn.scss"
 import FormInput from "./../Form-Input/Form-Input"
 import CustomButton from "./../custom-button/CustomButton"
 
-import  {signInWithGoogle} from"../../Firebase/Firebase"
+import  {auth,signInWithGoogle} from"../../Firebase/Firebase"
 class SignIn extends React.Component{
     state={
         email:"",
         password:""
     }
 
-    handleSubmit=(e)=>{
+    handleSubmit= async e=>{
         e.preventDefault()
-
-
-        this.setState({
-            email:"",
-            password:''
-        })
+        const {email,password}=this.state
+        try{
+            auth.signInWithEmailAndPassword(email,password)
+            this.setState({
+                email:"",
+                password:''
+            })
+        }catch(error){
+            console.log(error)
+        }
+       
     }
 
     handleChange=(e)=>{
