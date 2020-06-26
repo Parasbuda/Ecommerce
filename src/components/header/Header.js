@@ -4,7 +4,9 @@ import {Link} from "react-router-dom"
 import {ReactComponent as Logo} from "../../assets/crown.svg"
 import {auth} from "../../Firebase/Firebase"
 import {connect} from "react-redux"
-const Header=({currentUser})=>{
+import CartIcon from "../Cart-icon/CartIcon"
+import CartDropdown from "../Cart-dropdown/CartDropdown"
+const Header=({currentUser,hidden})=>{
     return(
         <div className="header">
             <Link to="/" className="logo-container  ">
@@ -19,13 +21,18 @@ const Header=({currentUser})=>{
                         <div className="option" onClick={()=>auth.signOut()}>SIGN OUT</div>:
                         <Link className="option" to="/signin">SIGNIN</Link>
                     }
-    
+                    <CartIcon/>
                 </div>
+                {
+                   hidden ? null:<CartDropdown/>
+                }
+               
         </div>
     )
 }
 
-const mapsStateToProps=state=>({
-    currentUser:state.user.currentUser
+const mapsStateToProps=({user:{currentUser},cart:{hidden}})=>({
+    currentUser,
+    hidden
 })
 export default connect(mapsStateToProps)(Header) 
