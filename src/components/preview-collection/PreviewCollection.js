@@ -9,8 +9,7 @@ const PreviewCollection=({title,items})=>{
             {
                 items.filter((item,i)=>i<4).map(item=>{
                     return(
-                        <CollectionItem key={item.id} name={item.name} price={item.price}
-                        imageUrl={item.imageUrl} id={item.id} />
+                        <CollectionItem key={item.id} item={item} />
                     )
                 })
             }
