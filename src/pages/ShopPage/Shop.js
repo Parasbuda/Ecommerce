@@ -1,24 +1,11 @@
-import React, { Component } from 'react'
-import Shop_Data from './Shop_Data'
-import PreviewCollection from '../../components/preview-collection/PreviewCollection'
+import React from "react"
+import CollectionOverview from "../../components/collection-overview/CollectionOverview"
 
-export default class Shop extends Component {
-    state={
-        collections:Shop_Data
-    }
-    render() {
-        return (
-            <div className="shoppage">
-                {
-                    this.state.collections.map(collection=>{
-                        return(
-                            <PreviewCollection key={collection.id} items={collection.items}
-                            title={collection.title}/>
-                        )
-                    })
-                }
-             
-            </div>
-        )
-    }
+
+const Shop = ({ collections }) => {
+    return <div className="shoppage">
+      <CollectionOverview/>
+  </div>
 }
+
+export default Shop
